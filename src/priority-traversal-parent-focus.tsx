@@ -346,6 +346,7 @@ export function HypergraphNodeComponentKeyboardOnly(
 
   const sortAdjacents = createMemo(() => {
     const adjacentNodeIds = findSiblings(props.node.id);
+    console.log("adjacentNodeIds", adjacentNodeIds);
 
     const adjacentNodes = Array.from(adjacentNodeIds)
       .map((nodeId) => props.nodeGraph[nodeId])
@@ -356,8 +357,10 @@ export function HypergraphNodeComponentKeyboardOnly(
           return priorityDifference;
         }
         // If priorities are the same, sort by ID (lexicographical order)
-        return a.id.localeCompare(b.id);
+        return Number(a.id) - Number(b.id);
       });
+
+    console.log("adjacentNodes", adjacentNodes);
     return adjacentNodes;
   });
 
