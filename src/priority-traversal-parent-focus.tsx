@@ -159,7 +159,7 @@ export function TraversalOutputComponentKeyboardParentFocus(
 
         const switchingFocus = document.getElementById("switch-focus");
         if (switchingFocus) {
-          switchingFocus.innerHTML = `Switching parent to ${props.nodeGraph[nextParentId].displayName}`;
+          switchingFocus.innerHTML = `Parent is ${props.nodeGraph[nextParentId].displayName}`;
           switchingFocus.focus();
         }
 
@@ -169,7 +169,7 @@ export function TraversalOutputComponentKeyboardParentFocus(
           if (curNodeSection) {
             curNodeSection.focus();
           }
-        }, 1500);
+        }, 1200);
       }
       event.preventDefault();
     } else if (event.key === "Backspace") {
