@@ -207,11 +207,11 @@ export function TraversalOutputComponentKeyboardParentFocus(
       const focusedElementId = focusedElement?.id;
 
       if (focusedElementId.startsWith("info-") || focusedElementId === "home") {
-        const buttonsInGroup = Array.from(
-          document.querySelectorAll(`#home button`)
+        const elmInGroup = Array.from(
+          document.querySelectorAll(`#home li`)
         ) as HTMLElement[];
 
-        const currentIndex = buttonsInGroup.indexOf(focusedElement);
+        const currentIndex = elmInGroup.indexOf(focusedElement);
         let newIndex = currentIndex;
 
         if (
@@ -221,19 +221,19 @@ export function TraversalOutputComponentKeyboardParentFocus(
           newIndex = currentIndex - 1;
         } else if (
           (event.key === "ArrowRight" || event.key === "ArrowDown") &&
-          currentIndex < buttonsInGroup.length - 1
+          currentIndex < elmInGroup.length - 1
         ) {
           newIndex = currentIndex + 1;
         }
 
-        const newNodeId = buttonsInGroup[newIndex]?.id.split("info-")[1];
+        const newNodeId = elmInGroup[newIndex]?.id.split("info-")[1];
         if (newNodeId) {
           const historyList = history();
           const previousAdjNode = historyList.pop();
           setHistory([...historyList, newNodeId]);
           setCurrentNodeId(newNodeId);
         }
-        buttonsInGroup[newIndex]?.focus();
+        elmInGroup[newIndex]?.focus();
 
         event.preventDefault();
       } else {
@@ -348,7 +348,6 @@ export function HypergraphNodeComponentKeyboardOnly(
 
   const sortAdjacents = createMemo(() => {
     const adjacentNodeIds = findSiblings(props.node.id);
-    console.log("adjacentNodeIds", adjacentNodeIds);
 
     const adjacentNodes = Array.from(adjacentNodeIds)
       .map((nodeId) => props.nodeGraph[nodeId])
@@ -362,110 +361,78 @@ export function HypergraphNodeComponentKeyboardOnly(
         return Number(a.id) - Number(b.id);
       });
 
-    console.log("adjacentNodes", adjacentNodes);
     return adjacentNodes;
   });
 
   return (
-    <div style={{ padding: "20px" }}>
-      <div id={`home`} tabindex="0">
+    <div>
+      <ul id="home" tabindex="0">
         <For
           each={sortAdjacents()}
-          fallback={
-            <span
-              style={{ color: "grey" }}
-              aria-label={"There are no adjacent nodes"}
-              id={`info-none`}
-            >
-              {" "}
-              None
-            </span>
-          }
+          fallback={<li style={{ color: "grey" }}>None</li>}
         >
           {(adjacent, idx) => (
-            <button
-              onClick={() => props.onNodeClick(props.node.id, adjacent.id)}
-              style={{ "margin-right": "5px" }}
+            <li
               aria-label={`Node ${idx() + 1} of ${sortAdjacents().length}; ${
                 adjacent.displayName
               }; ${adjacent.descriptionTokens?.longDescription}`}
               id={`info-${adjacent.id}`}
+              onClick={() => props.onNodeClick(props.node.id, adjacent.id)}
+              tabindex="0"
             >
-              <span aria-hidden={true}>{adjacent.displayName}</span>
-            </button>
+              <span aria-hidden="true">{`${adjacent.displayName}; ${adjacent.descriptionTokens?.longDescription}`}</span>
+            </li>
           )}
         </For>
-      </div>
-      <div
-        id={`parents-group`}
-        style={{ "margin-top": "10px" }}
-        aria-label={`${
-          props.node.parents.length
-        } parent relations; ${collectParentNames()}`}
+      </ul>
+
+      <ul
+        id="parents-group"
+        aria-label={
+          props.node.parents.length == 0
+            ? `${props.node.displayName} belongs to 0 groups`
+            : `${props.node.displayName} belongs to (${collectParentNames()})`
+        }
         tabindex="0"
       >
-        <span style={{ "font-weight": "bold" }} aria-hidden={true}>
-          Parents{" "}
-        </span>
-        <For
-          each={sortedParents()}
-          fallback={
-            <span
-              style={{ color: "grey" }}
-              aria-label="There are no parent nodes"
-              id={`parents-${props.node.id}-0`}
-            >
-              {" "}
-              None
-            </span>
-          }
-        >
+        <span style={{ "font-weight": "bold" }}>Belongs to</span>
+        <For each={sortedParents()}>
           {(parent, idx) => (
-            <button
-              onClick={() => props.onNodeClick(props.node.id, parent.id)}
-              style={{ "margin-right": "5px" }}
+            <li
               id={`parents-${props.node.id}-${idx()}`}
+              aria-label={`${parent.displayName} group`}
+              onClick={() => props.onNodeClick(props.node.id, parent.id)}
             >
-              <span aria-hidden={true}>{parent.displayName}</span>
-            </button>
+              <span aria-hidden="true">{parent.displayName} group</span>
+            </li>
           )}
         </For>
-      </div>
-      <div
-        style={{ "margin-top": "10px" }}
-        id={`children-group`}
-        aria-label={`${
-          props.node.children.length
-        } child relations; ${collectChildrenNames()}`}
+      </ul>
+
+      <ul
+        id="children-group"
+        aria-label={
+          props.node.children.length === 0
+            ? `${props.node.displayName} contains no nodes`
+            : `${props.node.displayName} contains (${collectChildrenNames()})`
+        }
         tabindex="0"
       >
         <span style={{ "font-weight": "bold" }} aria-hidden={true}>
-          Children{" "}
+          Contains
         </span>
-        <For
-          each={sortedChildren()}
-          fallback={
-            <span
-              style={{ color: "grey" }}
-              aria-label="There are no children nodes"
-              id={`children-${props.node.id}-0`}
-            >
-              {" "}
-              None
-            </span>
-          }
-        >
+        <For each={sortedChildren()}>
           {(child, idx) => (
-            <button
-              onClick={() => props.onNodeClick(props.node.id, child.id)}
-              style={{ "margin-right": "5px" }}
+            <li
               id={`children-${props.node.id}-${idx()}`}
+              aria-label={child.displayName}
+              onClick={() => props.onNodeClick(props.node.id, child.id)}
             >
-              <span aria-hidden={true}>{child.displayName}</span>
-            </button>
+              <span aria-hidden="true">{child.displayName}</span>
+            </li>
           )}
         </For>
-      </div>
+      </ul>
     </div>
   );
 }
