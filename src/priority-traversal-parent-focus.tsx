@@ -95,9 +95,18 @@ export function TraversalOutputComponentKeyboardParentFocus(
   };
   const handleKeyPress = (event: KeyboardEvent) => {
     if (event.key === "ArrowUp" && event.shiftKey) {
+      const focusedElement = document.activeElement as HTMLElement;
+      const focusedElementId = focusedElement?.id;
       // Navigate up through the parent focus using history
       const historyList = history();
-      if (historyList.length > 2) {
+      if (focusedElementId.startsWith("children")) {
+        // Only occurs when node contains no children
+        // then Shift + ArrowUp returns to current node in focus
+        const currentNode = document.getElementById(`info-${currentNodeId()}`);
+        if (currentNode) {
+          currentNode.focus();
+        }
+      } else if (historyList.length > 2) {
         const curNodeId = historyList.pop();
         const parentNodeId = historyList[historyList.length - 1];
         const grandParentNodeId = historyList[historyList.length - 2];
@@ -143,25 +152,33 @@ export function TraversalOutputComponentKeyboardParentFocus(
       }
       event.preventDefault();
     } else if (event.key === "ArrowDown" && event.shiftKey) {
-      // Directly navigate to first child if children exist
-      // If not, then select entire group and announce that no children exist
+      const focusedElement = document.activeElement as HTMLElement;
+      const focusedElementId = focusedElement?.id;
 
-      const firstChildId = props.nodeGraph[currentNodeId()!].children[0];
-
-      if (firstChildId) {
-        // update history list with traversed children node
-        setHistory((prev) => [...prev, firstChildId]);
-
-        setCurrentNodeId(firstChildId);
-
-        const newSection = document.getElementById(`info-${firstChildId}`);
-        if (newSection) {
-          newSection.focus();
+      if (focusedElementId.startsWith("parents")) {
+        const currentNode = document.getElementById(`info-${currentNodeId()}`);
+        if (currentNode) {
+          currentNode.focus();
         }
       } else {
-        const childSection = document.getElementById(`children-group`);
-        if (childSection) {
-          childSection.focus();
+        // Directly navigate to first child if children exist
+        // If not, then select entire group and announce that no children exist
+        const firstChildId = props.nodeGraph[currentNodeId()!].children[0];
+        if (firstChildId) {
+          // update history list with traversed children node
+          setHistory((prev) => [...prev, firstChildId]);
+
+          setCurrentNodeId(firstChildId);
+
+          const newSection = document.getElementById(`info-${firstChildId}`);
+          if (newSection) {
+            newSection.focus();
+          }
+        } else {
+          const childSection = document.getElementById(`children-group`);
+          if (childSection) {
+            childSection.focus();
+          }
         }
       }
       event.preventDefault();
