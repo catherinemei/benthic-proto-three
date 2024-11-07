@@ -44,8 +44,41 @@ export function TraversalOutputComponentKeyboardParentFocus(
     return parents.indexOf(previousNodeId);
   };
 
+  const findAllSiblingsOfNode = (nodeId: string) => {
+    const parents = props.nodeGraph[nodeId].parents;
+    const siblings = new Set<string>();
+    for (const parentId of parents) {
+      for (const childId of props.nodeGraph[parentId].children) {
+        siblings.add(childId);
+      }
+    }
+    return siblings;
+  };
+
   const handleNodeClick = (oldId: string, newId: string) => {
-    setHistory((prev) => [...prev, oldId]);
+    if (oldId === newId) {
+      return;
+    }
+
+    const newNodeSiblings = findAllSiblingsOfNode(newId);
+
+    if (newNodeSiblings.has(oldId)) {
+      // If old and new ID are on same level (siblings)
+      // then pop most recent history node and add new node
+      const curHistory = history();
+      curHistory.pop();
+      setHistory([...curHistory, newId]);
+    } else if (props.nodeGraph[oldId].parents.includes(newId)) {
+      // If new node is a parent of the old node
+      // Then use the default path to the new node as new history
+      const defaultPath = defaultPaths().get(newId);
+      setHistory([...(defaultPath ?? ["0"])]);
+    } else if (props.nodeGraph[oldId].children.includes(newId)) {
+      // If new node is a child of the old node
+      // Then add new node to the history
+      setHistory((prev) => [...prev, newId]);
+    }
+
     setCurrentNodeId(newId);
 
     // Moves screen reader focus
@@ -60,7 +93,6 @@ export function TraversalOutputComponentKeyboardParentFocus(
       }
     }, 0);
   };
-
   const handleKeyPress = (event: KeyboardEvent) => {
     if (event.key === "ArrowUp" && event.shiftKey) {
       // Navigate up through the parent focus using history
