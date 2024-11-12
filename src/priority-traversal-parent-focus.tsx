@@ -222,7 +222,7 @@ export function TraversalOutputComponentKeyboardParentFocus(
           if (curNodeSection) {
             curNodeSection.focus();
           }
-        }, 1500);
+        }, 2000);
       }
       event.preventDefault();
     } else if (event.key === "Backspace") {
@@ -246,7 +246,7 @@ export function TraversalOutputComponentKeyboardParentFocus(
             if (newNode) {
               newNode.focus();
             }
-          }, 800);
+          }, 1000);
         }
         return newHistory;
       });
