@@ -206,19 +206,23 @@ export function TraversalOutputComponentKeyboardParentFocus(
         const oldParent = curHistory.pop();
         setHistory((prev) => [...curHistory, nextParentId, currentNodeId()!]);
 
-        const switchingFocus = document.getElementById("switch-focus");
-        if (switchingFocus) {
-          switchingFocus.innerHTML = `Parent is ${props.nodeGraph[nextParentId].displayName}`;
-          switchingFocus.focus();
+        const parentContext = document.getElementById("parent-context");
+        const curNodeSection = document.getElementById(`info-${curNodeId}`);
+
+        if (parentContext) {
+          parentContext.innerHTML = `Grouping by ${props.nodeGraph[nextParentId].displayName}`;
+          parentContext.setAttribute(
+            "aria-label",
+            `Grouping by ${props.nodeGraph[nextParentId].displayName}`
+          );
+          parentContext.focus();
         }
 
         setTimeout(() => {
-          const curNodeSection = document.getElementById(`info-${curNodeId}`);
-
           if (curNodeSection) {
             curNodeSection.focus();
           }
-        }, 1200);
+        }, 1500);
       }
       event.preventDefault();
     } else if (event.key === "Backspace") {
@@ -229,7 +233,7 @@ export function TraversalOutputComponentKeyboardParentFocus(
 
         if (previousNodeId) {
           // used to announce undo action
-          const undoMessage = document.getElementById("hidden-focus");
+          const undoMessage = document.getElementById("undo-text");
           if (undoMessage) {
             undoMessage.focus();
           }
@@ -242,7 +246,7 @@ export function TraversalOutputComponentKeyboardParentFocus(
             if (newNode) {
               newNode.focus();
             }
-          }, 700);
+          }, 800);
         }
         return newHistory;
       });
@@ -291,6 +295,24 @@ export function TraversalOutputComponentKeyboardParentFocus(
     } else {
       event.preventDefault();
     }
+
+    const parentContext = document.getElementById("parent-context");
+    if (parentContext) {
+      if (history().length > 1) {
+        parentContext.innerHTML = `Grouping by ${
+          props.nodeGraph[history()[history().length - 2]].displayName
+        }`;
+        parentContext.setAttribute(
+          "aria-label",
+          `Grouping by ${
+            props.nodeGraph[history()[history().length - 2]].displayName
+          }`
+        );
+      } else {
+        parentContext.innerHTML = `No context`;
+        parentContext.setAttribute("aria-label", `No context`);
+      }
+    }
   };
 
   onMount(() => {
@@ -305,50 +327,14 @@ export function TraversalOutputComponentKeyboardParentFocus(
   });
 
   return (
-    <div>
-      <button
-        id="hidden-focus"
-        style={{
-          position: "absolute",
-          width: "1px",
-          height: "1px",
-          margin: "-1px",
-          padding: "0",
-          border: "0",
-          clip: "rect(0, 0, 0, 0)",
-          overflow: "hidden",
-          "white-space": "nowrap",
-        }}
-        aria-hidden="true"
-      >
-        Pressing Undo
-      </button>
-      <button
-        id="switch-focus"
-        style={{
-          position: "absolute",
-          width: "1px",
-          height: "1px",
-          margin: "-1px",
-          padding: "0",
-          border: "0",
-          clip: "rect(0, 0, 0, 0)",
-          overflow: "hidden",
-          "white-space": "nowrap",
-        }}
-        aria-hidden="true"
-      >
-        Switching Parent
-      </button>
-      <Show when={currentNodeId()}>
-        <HypergraphNodeComponentKeyboardOnly
-          history={history()}
-          node={currentNode()}
-          nodeGraph={props.nodeGraph}
-          onNodeClick={handleNodeClick}
-        />
-      </Show>
-    </div>
+    <Show when={currentNodeId()}>
+      <HypergraphNodeComponentKeyboardOnly
+        history={history()}
+        node={currentNode()}
+        nodeGraph={props.nodeGraph}
+        onNodeClick={handleNodeClick}
+      />
+    </Show>
   );
 }
 
@@ -415,24 +401,8 @@ export function HypergraphNodeComponentKeyboardOnly(
 
   return (
     <div>
-      <ul id="home" tabindex="0">
-        <For
-          each={sortAdjacents()}
-          fallback={<li style={{ color: "grey" }}>None</li>}
-        >
-          {(adjacent, idx) => (
-            <li
-              aria-label={`Node ${idx() + 1} of ${sortAdjacents().length}; ${
-                adjacent.displayName
-              }; ${adjacent.descriptionTokens?.longDescription}`}
-              id={`info-${adjacent.id}`}
-              onClick={() => props.onNodeClick(props.node.id, adjacent.id)}
-              tabindex="0"
-            >
-              <span aria-hidden="true">{`${adjacent.displayName}; ${adjacent.descriptionTokens?.longDescription}`}</span>
-            </li>
-          )}
-        </For>
+      <ul id="parent-context" tabindex="0" aria-label="No context">
+        <span aria-hidden={true}>No context</span>
       </ul>
 
       <ul
@@ -453,6 +423,26 @@ export function HypergraphNodeComponentKeyboardOnly(
               onClick={() => props.onNodeClick(props.node.id, parent.id)}
             >
               <span aria-hidden="true">{parent.displayName} group</span>
+            </li>
+          )}
+        </For>
+      </ul>
+
+      <ul id="home" tabindex="0" aria-live="assertive">
+        <For
+          each={sortAdjacents()}
+          fallback={<li style={{ color: "grey" }}>None</li>}
+        >
+          {(adjacent, idx) => (
+            <li
+              aria-label={`Node ${idx() + 1} of ${sortAdjacents().length}; ${
+                adjacent.displayName
+              }; ${adjacent.descriptionTokens?.longDescription}`}
+              id={`info-${adjacent.id}`}
+              onClick={() => props.onNodeClick(props.node.id, adjacent.id)}
+              tabindex="0"
+            >
+              <span aria-hidden="true">{`${adjacent.displayName}; ${adjacent.descriptionTokens?.longDescription}`}</span>
             </li>
           )}
         </For>
@@ -481,6 +471,12 @@ export function HypergraphNodeComponentKeyboardOnly(
             </li>
           )}
         </For>
+      </ul>
+
+      <ul id="undo-text" tabindex="0" aria-label="Pressing Undo">
+        <span style={{ "font-weight": "bold" }} aria-hidden={true}>
+          Pressing Undo
+        </span>
       </ul>
     </div>
   );
