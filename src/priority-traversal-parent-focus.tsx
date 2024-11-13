@@ -309,8 +309,11 @@ export function TraversalOutputComponentKeyboardParentFocus(
           }`
         );
       } else {
-        parentContext.innerHTML = `No context`;
-        parentContext.setAttribute("aria-label", `No context`);
+        parentContext.innerHTML = `Node belongs to no groupings`;
+        parentContext.setAttribute(
+          "aria-label",
+          `Node belongs to no groupings`
+        );
       }
     }
   };
@@ -401,10 +404,6 @@ export function HypergraphNodeComponentKeyboardOnly(
 
   return (
     <div>
-      <ul id="parent-context" tabindex="0" aria-label="No context">
-        <span aria-hidden={true}>No context</span>
-      </ul>
-
       <ul
         id="parents-group"
         aria-label={
@@ -428,6 +427,14 @@ export function HypergraphNodeComponentKeyboardOnly(
         </For>
       </ul>
 
+      <ul
+        id="parent-context"
+        tabindex="0"
+        aria-label="Node belongs to no groupings"
+      >
+        <span aria-hidden={true}>Node belongs to no groupings</span>
+      </ul>
+
       <ul id="home" tabindex="0" aria-live="assertive">
         <For
           each={sortAdjacents()}
@@ -435,9 +442,7 @@ export function HypergraphNodeComponentKeyboardOnly(
         >
           {(adjacent, idx) => (
             <li
-              aria-label={`Node ${idx() + 1} of ${sortAdjacents().length}; ${
-                adjacent.displayName
-              }; ${adjacent.descriptionTokens?.longDescription}`}
+              aria-label={`${adjacent.displayName}; ${adjacent.descriptionTokens?.longDescription}`}
               id={`info-${adjacent.id}`}
               onClick={() => props.onNodeClick(props.node.id, adjacent.id)}
               tabindex="0"
