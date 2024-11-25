@@ -8,7 +8,8 @@ export const aspirinHypergraph: Hypergraph = {
       "Chemical diagram for aspirin. Contains benzene, ester, and carboxylic acid.",
     descriptionTokens: {
       label: "Aspirin",
-      shortDescription: "Chemical diagram for aspirin. Contains benzene ring, ester, and carboxylic acid.",
+      shortDescription:
+        "Chemical diagram for aspirin. Contains benzene ring, ester, and carboxylic acid.",
       longDescription:
         "Molecule containing benzene ring, ester, and carboxylic acid.",
     },
@@ -50,10 +51,8 @@ export const aspirinHypergraph: Hypergraph = {
     description: "Carboxylic acid group bonded to C2 of benzene ring.",
     descriptionTokens: {
       label: "Carboxylic acid",
-      shortDescription:
-        "Carboxylic acid group bonded to C2 of benzene ring.",
-      longDescription:
-        "Group bonded to C2 of benzene ring.",
+      shortDescription: "Carboxylic acid group bonded to C2 of benzene ring.",
+      longDescription: "Group bonded to C2 of benzene ring.",
     },
     parents: ["0"],
     children: ["5", "14", "15", "16"],
@@ -61,15 +60,12 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "4": {
     id: "4",
-    displayName: "C1 of benzene",
-    description:
-      "Bonded to C2 and C6 of benzene and O1 of ester.",
+    displayName: "C1",
+    description: "Bonded to C2 and C6 of benzene and O1 of ester.",
     descriptionTokens: {
-      label: "C1 of benzene",
-      shortDescription:
-        "Bonded to C2 and C6 of benzene and O1 of ester.",
-      longDescription:
-        "Bonded to C2 and C6 of benzene and O1 of ester.",
+      label: "C1",
+      shortDescription: "Bonded to C2 and C6 of benzene and O1 of ester.",
+      longDescription: "Bonded to C2 and C6 of benzene and O1 of ester.",
     },
     parents: ["1", "2"],
     children: [],
@@ -77,11 +73,10 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "5": {
     id: "5",
-    displayName: "C2 of benzene",
-    description:
-      "Bonded to C1 and C3 of benzene and C9 of carboxylic acid.",
+    displayName: "C2",
+    description: "Bonded to C1 and C3 of benzene and C9 of carboxylic acid.",
     descriptionTokens: {
-      label: "C2 of benzene",
+      label: "C2",
       shortDescription:
         "Bonded to C1 and C3 of benzene and C9 of carboxylic acid.",
       longDescription:
@@ -93,15 +88,12 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "6": {
     id: "6",
-    displayName: "C3 of benzene",
-    description:
-      "Bonded to C2 and C4 of benzene.",
+    displayName: "C3",
+    description: "Bonded to C2 and C4 of benzene.",
     descriptionTokens: {
-      label: "C3 of benzene",
-      shortDescription:
-        "Bonded to C2 and C4 of benzene.",
-      longDescription:
-        "Bonded to C2 and C4 of benzene.",
+      label: "C3",
+      shortDescription: "Bonded to C2 and C4 of benzene.",
+      longDescription: "Bonded to C2 and C4 of benzene.",
     },
     parents: ["1"],
     children: [],
@@ -109,15 +101,12 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "7": {
     id: "7",
-    displayName: "C4 of benzene",
-    description:
-      "Bonded to C3 and C5 of benzene.",
+    displayName: "C4",
+    description: "Bonded to C3 and C5 of benzene.",
     descriptionTokens: {
-      label: "C4 of benzene",
-      shortDescription:
-        "Bonded to C3 and C5 of benzene.",
-      longDescription:
-        "Bonded to C3 and C5 of benzene.",
+      label: "C4",
+      shortDescription: "Bonded to C3 and C5 of benzene.",
+      longDescription: "Bonded to C3 and C5 of benzene.",
     },
     parents: ["1"],
     children: [],
@@ -125,15 +114,12 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "8": {
     id: "8",
-    displayName: "C5 of benzene",
-    description:
-      "Bonded to C4 and C6 of benzene.",
+    displayName: "C5",
+    description: "Bonded to C4 and C6 of benzene.",
     descriptionTokens: {
-      label: "C5 of benzene",
-      shortDescription:
-        "Bonded to C4 and C6 of benzene.",
-      longDescription:
-        "Bonded to C4 and C6 of benzene.",
+      label: "C5",
+      shortDescription: "Bonded to C4 and C6 of benzene.",
+      longDescription: "Bonded to C4 and C6 of benzene.",
     },
     parents: ["1"],
     children: [],
@@ -141,15 +127,12 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "9": {
     id: "9",
-    displayName: "C6 of benzene",
-    description:
-      "Bonded to C1 and C5 of benzene.",
+    displayName: "C6",
+    description: "Bonded to C1 and C5 of benzene.",
     descriptionTokens: {
-      label: "C6 of benzene",
-      shortDescription:
-        "Bonded to C1 and C5 of benzene.",
-      longDescription:
-        "Bonded to C1 and C5 of benzene.",
+      label: "C6",
+      shortDescription: "Bonded to C1 and C5 of benzene.",
+      longDescription: "Bonded to C1 and C5 of benzene.",
     },
     parents: ["1"],
     children: [],
@@ -157,10 +140,10 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "10": {
     id: "10",
-    displayName: "O1 of ester",
+    displayName: "O1",
     description: "Bonded to C1 of benzene and C7 of ester.",
     descriptionTokens: {
-      label: "O1 of ester",
+      label: "O1",
       shortDescription: "Bonded to C1 of benzene and C7 of ester.",
       longDescription: "Bonded to C1 of benzene and C7 of ester.",
     },
@@ -170,15 +153,12 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "11": {
     id: "11",
-    displayName: "C7 of ester",
-    description:
-     "Bonded to O1, O2, and C8 of ester",
+    displayName: "C7",
+    description: "Bonded to O1, O2, and C8 of ester",
     descriptionTokens: {
-      label: "C7 of ester",
-      shortDescription:
-        "Bonded to O1, O2, and C8 of ester",
-      longDescription:
-        "Bonded to O1, O2, and C8 of ester",
+      label: "C7",
+      shortDescription: "Bonded to O1, O2, and C8 of ester",
+      longDescription: "Bonded to O1, O2, and C8 of ester",
     },
     parents: ["2"],
     children: [],
@@ -186,10 +166,10 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "12": {
     id: "12",
-    displayName: "O2 of ester",
+    displayName: "O2",
     description: "Bonded to C7 of ester.",
     descriptionTokens: {
-      label: "O2 of ester",
+      label: "O2",
       shortDescription: "Bonded to C7 of ester.",
       longDescription: "Bonded to C7 of ester.",
     },
@@ -199,10 +179,10 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "13": {
     id: "13",
-    displayName: "C8 of ester",
+    displayName: "C8",
     description: "Bonded to C7 of ester.",
     descriptionTokens: {
-      label: "C8 of ester",
+      label: "C8",
       shortDescription: "Bonded to C7 of ester.",
       longDescription: "Bonded to C7 of ester.",
     },
@@ -212,15 +192,12 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "14": {
     id: "14",
-    displayName: "C9 of carboxylic acid",
-    description:
-      "Bonded to O3 and hydroxyl in carboxylic acid.",
+    displayName: "C9",
+    description: "Bonded to O3 and hydroxyl in carboxylic acid.",
     descriptionTokens: {
-      label: "C9 of carboxylic acid",
-      shortDescription:
-        "Bonded to O3 and hydroxyl in carboxylic acid.",
-      longDescription:
-        "Bonded to O3 and hydroxyl in carboxylic acid.",
+      label: "C9",
+      shortDescription: "Bonded to O3 and hydroxyl in carboxylic acid.",
+      longDescription: "Bonded to O3 and hydroxyl in carboxylic acid.",
     },
     parents: ["3"],
     children: [],
@@ -228,10 +205,10 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "15": {
     id: "15",
-    displayName: "O3 of carboxylic acid",
+    displayName: "O3",
     description: "Bonded to C9 of carboxylic acid.",
     descriptionTokens: {
-      label: "O3 of carboxylic acid",
+      label: "O3",
       shortDescription: "Bonded to C9 of carboxylic acid.",
       longDescription: "Bonded to C9 of carboxylic acid.",
     },
@@ -241,10 +218,10 @@ export const aspirinHypergraph: Hypergraph = {
   },
   "16": {
     id: "16",
-    displayName: "Hydroxyl in carboxylic acid",
+    displayName: "Hydroxyl",
     description: "Bonded to C9 of carboxylic acid.",
     descriptionTokens: {
-      label: "Hydroxyl in carboxylic acid",
+      label: "Hydroxyl",
       shortDescription: "Bonded to C9 of carboxylic acid.",
       longDescription: "Bonded to C9 of carboxylic acid.",
     },
